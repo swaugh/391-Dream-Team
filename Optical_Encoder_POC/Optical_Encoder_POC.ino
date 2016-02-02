@@ -1,6 +1,6 @@
 void setup() {
   // put your setup code here, to run once:
-
+  int optical_angle = 0;
 }
 
 void loop() {
