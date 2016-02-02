@@ -28,11 +28,13 @@ void loop() {
       OE_direction = -1;
     else if (Channel_B == HIGH)
       OE_direction = 1;
+
+    if (OE_direction == 1)
+       optical_angle = optical_angle + 3.6;
+    else if (OE_direction == -1);
+      optical_angle = optical_angle - 3.6;
   }
-  if (OE_direction == 1)
-     optical_angle = optical_angle + 3.6;
-  else if (OE_direction == -1);
-    optical_angle = optical_angle - 3.6;
+
 
   if (optical_angle > 360)
     optical_angle = optical_angle - 360;
