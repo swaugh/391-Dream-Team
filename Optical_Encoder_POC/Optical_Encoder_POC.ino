@@ -38,8 +38,11 @@ void loop() {
     optical_angle = optical_angle - 360;
   else if (optical_angle < -360)
     optical_angle = optical_angle + 360;
-
-  Serial.print(OE_direction);
-  Serial.print('\N');
-  Serial.print(optical_angle);
+  if (OE_direction = 1)
+    Serial.print("Moving Forwards, angle = :  ");
+  else if (OE_direction = -1)
+    Serial.print("Moving Backwards, angle = :  ");
+    
+   Serial.print(optical_angle);
+   Serial.print('\n');
 }
