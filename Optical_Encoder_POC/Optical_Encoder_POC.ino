@@ -15,7 +15,7 @@ void loop() {
   Channel_A = digitalRead(5);
   Channel_B = digitalRead(4);
 
-  if (Channel_A == HIGH) {
+  if (digitalRead(5) == HIGH) {
     count_encoder = count_encoder + 1;
     if (Channel_B == LOW)
       OE_direction = 1;
