@@ -17,16 +17,16 @@ void loop() {
 
   if (digitalRead(5) == HIGH) {
     count_encoder = count_encoder + 1;
-    if (Channel_B == LOW)
+    if (digitalRead(4) == LOW)
       OE_direction = 1;
-    else if (Channel_B == HIGH)
+    else if (digitalRead(4) == HIGH)
       OE_direction = -1;
-    while(Channel_A == HIGH){
+    while(digitalRead(5) == HIGH){
        //ISR DOES STUFF
       }
-    if (Channel_B == LOW)
+    if (digitalRead(4) == LOW)
       OE_direction = -1;
-    else if (Channel_B == HIGH)
+    else if (digitalRead(4) == HIGH)
       OE_direction = 1;
 
     if (OE_direction == 1)
