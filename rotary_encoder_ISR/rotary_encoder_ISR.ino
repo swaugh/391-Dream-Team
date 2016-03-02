@@ -12,12 +12,12 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (digitalRead(5) == HIGH) {
-    if (digitalRead(4) == LOW)
+  if (digitalRead(RE_lead_pin) == HIGH) {
+    if (digitalRead(RE_lag_pin) == LOW)
       RE_dir = 1;
-    else if (digitalRead(4) == HIGH)
+    else if (digitalRead(RE_lag_pin) == HIGH)
       RE_dir = -1;
-  while(digitalRead(5) == HIGH){
+  while(digitalRead(RE_lead_pin) == HIGH){
        //ISR DOES STUFF
       }
     if (RE_dir == 1){
