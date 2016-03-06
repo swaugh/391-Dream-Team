@@ -12,8 +12,8 @@
   const int OE_lag_pin = 12;
 
   //RE PID variables
-   double RE_Setpoint, RE_PID_Input, RE_PID_Output;
-   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,2,5,1, DIRECT);
+   double OE_Setpoint, OE_PID_Input, OE_PID_Output;
+   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.5,0,0, DIRECT); // in, out, Kp, Ki, Kd, direction
 
 void setup() {
   // put your setup code here, to run once:
@@ -24,18 +24,21 @@ void setup() {
   attachInterrupt(1, RE_ISR, RISING); //rotary encoder isr, will trigger on rising edge of channel A
  
   //initalize Roatry PID
-  RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
-  RE_Setpoint = 54; //for now we set a test setpoint to 90 degrees
-  RE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
+  OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
+  OE_Setpoint = 54; //for now we set a test setpoint to 90 degrees
+  OE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
+  OE_PID.SetOutputLimits(64, 127); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-   RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
-   RE_PID.Compute();
-  // Serial.print(RE_PID_Output);
+   OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
+   OE_PID.Compute();
+
   
-  //Serial.write(30);
+  //Serial.write((int) OE_PID_Output);
+  Serial.print((int) OE_PID_Output);
+  Serial.print('\n');
   delayMicroseconds(50);
   //Serial.write(200);
   delay(1);
@@ -69,6 +72,8 @@ void loop() {
        Serial.print('\n');
        
     }
+       Serial.print(OE_PID_Output);
+   Serial.print('\n');
  }
 
  void RE_ISR (){
