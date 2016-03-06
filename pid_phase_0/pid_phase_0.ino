@@ -1,4 +1,6 @@
-
+  #include <PID_v1.h>
+ 
+  
   volatile double RE_angle; //rotary encoder angle
   volatile int RE_dir; //rotary encoder direction
   const int RE_lead_pin = 3;
@@ -7,7 +9,11 @@
   volatile double OE_angle; //optical encoder angle
   volatile int OE_dir; //optical encoder direction
   const int OE_lead_pin = 2;
-  const int OE_lag_pin = 12; 
+  const int OE_lag_pin = 12;
+
+  //RE PID variables
+   double RE_Setpoint, RE_PID_Input, RE_PID_Output;
+   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,2,5,1, DIRECT);
 
 void setup() {
   // put your setup code here, to run once:
@@ -16,10 +22,19 @@ void setup() {
   pinMode(OE_lag_pin, INPUT);
   attachInterrupt(0, OE_ISR, RISING); //optical encoder isr, will trigger on rising edge of channel A
   attachInterrupt(1, RE_ISR, RISING); //rotary encoder isr, will trigger on rising edge of channel A
+ 
+  //initalize Roatry PID
+  RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
+  RE_Setpoint = 54; //for now we set a test setpoint to 90 degrees
+  RE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+   RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
+   RE_PID.Compute();
+  // Serial.print(RE_PID_Output);
+  
   //Serial.write(30);
   delayMicroseconds(50);
   //Serial.write(200);
