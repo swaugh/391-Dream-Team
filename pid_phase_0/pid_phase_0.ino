@@ -36,11 +36,10 @@ void loop() {
    OE_PID.Compute();
 
   
-  //Serial.write((int) OE_PID_Output);
+  Serial.write((int) OE_PID_Output);
+  delayMicroseconds(50);
   Serial.print((int) OE_PID_Output);
   Serial.print('\n');
-  delayMicroseconds(50);
-  //Serial.write(200);
   delay(1);
 }
 
