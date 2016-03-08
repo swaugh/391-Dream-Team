@@ -13,7 +13,7 @@
 
   //RE PID variables
    double OE_Setpoint, OE_PID_Input, OE_PID_Output;
-   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.5,0,0, DIRECT); // in, out, Kp, Ki, Kd, direction
+   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,1.4,0.002,1.5, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.15,0.15,0.8)
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,22 +25,30 @@ void setup() {
  
   //initalize Roatry PID
   OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
-  OE_Setpoint = 54; //for now we set a test setpoint to 90 degrees
+  OE_Setpoint = 28.8; //for now we set a test setpoint to 90 degrees
   OE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
   OE_PID.SetOutputLimits(64, 127); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+   if (OE_angle < 0)
+   {
+    
+    OE_angle = 0;
+   }
    OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
    OE_PID.Compute();
-
-  
-  Serial.write((int) OE_PID_Output);
+  if(OE_PID_Output >=64 && OE_PID_Output <= 127)
+  {
+    Serial.write((int) (OE_PID_Output));
+  }
+  //Serial.write(127);
   delayMicroseconds(50);
-  Serial.print((int) OE_PID_Output);
-  Serial.print('\n');
-  delay(1);
+  Serial.write(200);
+  //Serial.print('\n');
+  //Serial.print((int) OE_PID_Output);
+  //Serial.print('\n');
 }
 
  void OE_ISR (){
@@ -50,12 +58,13 @@ void loop() {
       OE_angle = OE_angle - 3.6;
       if (OE_angle <= -360)
           OE_angle = OE_angle + 360;
-          
+       /*   
        Serial.print("optical Moving Backwards, angle = :  ");
        Serial.print(OE_angle);
        Serial.print('\t');
        Serial.print("degrees");
        Serial.print('\n');
+       */
     }
 
     else if (digitalRead(OE_lag_pin) == LOW){
@@ -63,16 +72,21 @@ void loop() {
       OE_angle = OE_angle + 3.6;
        if (OE_angle >= 360)
          OE_angle = OE_angle - 360;
-
+         
+       /*
        Serial.print("optical Moving Forwards, angle = :  ");
        Serial.print(OE_angle);
        Serial.print('\t');
        Serial.print("degrees");
        Serial.print('\n');
+       */
        
     }
-       Serial.print(OE_PID_Output);
-   Serial.print('\n');
+       //Serial.print(OE_PID_Output);
+       /*Serial.print('\n');
+       Serial.print(OE_angle);
+       Serial.print('\n');
+       */
  }
 
  void RE_ISR (){
@@ -82,12 +96,13 @@ void loop() {
       RE_angle = RE_angle - 15;
       if (RE_angle <= -360)
           RE_angle = RE_angle + 360;
-          
+       /*   
        Serial.print("rotary Moving Backwards, angle = :  ");
        Serial.print(RE_angle);
        Serial.print('\t');
        Serial.print("degrees");
        Serial.print('\n');
+       */
     }
 
     else if (digitalRead(RE_lag_pin) == LOW){
@@ -95,13 +110,13 @@ void loop() {
       RE_angle = RE_angle + 15;
        if (RE_angle >= 360)
          RE_angle = RE_angle - 360;
-
+        /*
        Serial.print("rotary Moving Forwards, angle = :  ");
        Serial.print(RE_angle);
        Serial.print('\t');
        Serial.print("degrees");
        Serial.print('\n');
-       
+       */
     }
  }
 
