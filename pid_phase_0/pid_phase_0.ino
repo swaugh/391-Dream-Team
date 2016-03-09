@@ -1,6 +1,6 @@
   #include <PID_v1.h>
  
-  
+  //Note: RE is now actually a secondary OE
   volatile double RE_angle; //rotary encoder angle
   volatile int RE_dir; //rotary encoder direction
   const int RE_lead_pin = 3;
@@ -75,11 +75,18 @@ void loop() {
     * Code is as follows:
     * @@@@@@@@@@@@@@@@@@@@@@@@@@@
     * 
-    * If OE_angle = OE_SP
+    * //wait for arm to reach desired set point steadily
+    * If OE_angle == OE_SP
     *  OE_Count = OE_Count + 1; 
     *  
-    * If OE_Count = 1000  //can vary this value, probably need to play with delays to get a good number
-    *   RE_SP = 180;
+    * If OE_Count == 1000  //can vary this value, probably need to play with delays to get a good number
+    *   RE_SP = 180;  //Perform 180
+    *   
+    *If RE_angle == RE_SP
+    * RE_Count = RE_Count + 1;
+    * 
+    *if RE_Count == 1000  //Vary this based on timings
+    *  OE_SP = 0; //Lower arm to base position
     * 
     * @@@@@@@@@@@@@@@@@@@@@@@@@@@
     */
