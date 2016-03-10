@@ -60,7 +60,7 @@ void loop() {
   
       if (digitalRead(RE_lag_pin) == HIGH){
       RE_dir = -1;
-      RE_angle = RE_angle - 15;
+      RE_angle = RE_angle - 3.6;
       if (RE_angle <= -360)
           RE_angle = RE_angle + 360;
           
@@ -73,7 +73,7 @@ void loop() {
 
     else if (digitalRead(RE_lag_pin) == LOW){
       RE_dir = 1;
-      RE_angle = RE_angle + 15;
+      RE_angle = RE_angle + 3.6;
        if (RE_angle >= 360)
          RE_angle = RE_angle - 360;
 

@@ -13,11 +13,11 @@
 
   //OE PID variables
    double OE_Setpoint, OE_PID_Input, OE_PID_Output;
-   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,1.4,0.002,1.5, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.15,0.15,0.8)
+   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint, 2.3 ,1 , 2.2 , DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.15,0.15,0.8)
 
   //OE PID variables
    double RE_Setpoint, RE_PID_Input, RE_PID_Output;
-   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,1,0,0, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
+   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,3.9,0.7,4, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
 
 void setup() {
   // put your setup code here, to run once:
@@ -29,13 +29,13 @@ void setup() {
  
   //initalize Optical PID
   OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
-  OE_Setpoint = 28.8; //for now we set a test setpoint to 90 degrees
+  OE_Setpoint = 25.2; //for now we set a test setpoint to 90 degrees
   OE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
-  OE_PID.SetOutputLimits(65, 127); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
+  OE_PID.SetOutputLimits(65, 110); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
 
   //initalize Rotary PID
   RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
-  RE_Setpoint = 45; //for now we set a test setpoint to 90 degrees
+  RE_Setpoint = 30; //for now we set a test setpoint to 90 degrees
   RE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
   RE_PID.SetOutputLimits(128, 255); //cap the output of the RE_PID to 128 (full reverse) to 255 (full forward), 192 is stopped
 }
@@ -43,8 +43,9 @@ void setup() {
 void loop() {
   // Optical encoder angle should never be negative (starts at 0 deg)
    if (OE_angle < 0)
+   {
     OE_angle = 0;
-
+   }
    //Compute PID output for OE and RE
    OE_PID_Input = OE_angle; //input to OE PID controller is the actal measured angle
    OE_PID.Compute();
@@ -54,10 +55,20 @@ void loop() {
    
    //write output to motor 1 (Lift)
    Serial.write((int)OE_PID_Output);
-   delayMicroseconds(10); //delay unecessary??
+   //delayMicroseconds(50); //delay unecessary??
    //Write to motor 2 (Yaw)
-   Serial.write((int)RE_PID_Output);
-
+   Serial.write((int) RE_PID_Output);
+   /*
+   Serial.print('\n');
+   Serial.print(OE_PID_Output);
+   Serial.print('\t');
+   Serial.print((int)OE_PID_Output);
+   Serial.print('\t');
+   Serial.print(OE_angle);
+   Serial.print('\t');
+   Serial.print(OE_PID_Input);
+   Serial.print('\n');
+   */
    /*Pre-written code to run demo
     * First we level at horizontal (OE_SP = 28.8, RE_SP = 0); -> initalize set points to these values
     * Then we rotate 180degree (RE_SP = 180)
