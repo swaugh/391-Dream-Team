@@ -17,7 +17,7 @@
 
   //OE PID variables
    double RE_Setpoint, RE_PID_Input, RE_PID_Output;
-   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,3.9,0.7,4, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
+   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,1.1,0.0075,0.85, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,9 +35,9 @@ void setup() {
 
   //initalize Rotary PID
   RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
-  RE_Setpoint = 30; //for now we set a test setpoint to 90 degrees
+  RE_Setpoint = -36; //for now we set a test setpoint, test on -36,-72
   RE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
-  RE_PID.SetOutputLimits(128, 255); //cap the output of the RE_PID to 128 (full reverse) to 255 (full forward), 192 is stopped
+  RE_PID.SetOutputLimits(140, 243); //cap the output of the RE_PID to 128 (full reverse) to 255 (full forward), 192 is stopped
 }
 
 void loop() {
