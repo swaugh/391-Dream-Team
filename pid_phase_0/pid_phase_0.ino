@@ -1,4 +1,3 @@
-  #include <PID_AutoTune_v0.h>
   #include <PID_v1.h>
  
   //Note: RE is now actually a secondary OE
@@ -14,11 +13,11 @@
 
   //OE PID variables
    double OE_Setpoint, OE_PID_Input, OE_PID_Output;
-   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.1,1.7,0.6, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.42,0,1.2) 
+   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.175,0.28,0.32, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 0.175,0.28,0.32
    
   //OE PID variables
    double RE_Setpoint, RE_PID_Input, RE_PID_Output;
-   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,1.1,0.0075,0.85, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
+   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,0.25,0.0075,0.25, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
 
 void setup() {
   // put your setup code here, to run once:
