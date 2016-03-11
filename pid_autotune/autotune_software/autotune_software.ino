@@ -14,7 +14,7 @@
 
   //OE PID variables
    double OE_Setpoint, OE_PID_Input, OE_PID_Output;
-   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.1,1.7,0.6, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.42,0,1.2) 
+   PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,1.42,0,1.2, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far (1.15,0.15,0.8)
    
   //OE PID variables
    double RE_Setpoint, RE_PID_Input, RE_PID_Output;
@@ -32,11 +32,11 @@ void setup() {
   OE_PID_Input = OE_angle; //input to RE PID controller is the actal measured angle
   OE_Setpoint = 25.2; //for now we set a test setpoint to 90 degrees
   OE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
-  OE_PID.SetOutputLimits(65, 90); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
+  OE_PID.SetOutputLimits(65, 92); //cap the output of the OE_PID to 64(motor off) to 127 (max speed)
 
   //initalize Rotary PID
   RE_PID_Input = RE_angle; //input to RE PID controller is the actal measured angle
-  RE_Setpoint = 0; //for now we set a test setpoint, test on -36,-72
+  RE_Setpoint = -36; //for now we set a test setpoint, test on -36,-72
   RE_PID.SetMode(AUTOMATIC); //turn on the PID to automatic mode
   RE_PID.SetOutputLimits(140, 243); //cap the output of the RE_PID to 128 (full reverse) to 255 (full forward), 192 is stopped
 }
