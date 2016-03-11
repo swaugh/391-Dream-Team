@@ -13,11 +13,13 @@
 
   //OE PID variables
    double OE_Setpoint, OE_PID_Input, OE_PID_Output;
+   int OE_Count = 0;
    PID OE_PID(&OE_PID_Input, &OE_PID_Output, &OE_Setpoint,0.175,0.28,0.32, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 0.175,0.28,0.32
    
   //OE PID variables
    double RE_Setpoint, RE_PID_Input, RE_PID_Output;
-   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,0.25,0.0075,0.25, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
+   int RE_Count = 0;
+   PID RE_PID(&RE_PID_Input, &RE_PID_Output, &RE_Setpoint,1.25,0.075,0.25, DIRECT); // in, out, Kp, Ki, Kd, direction Best So far 
 
 void setup() {
   // put your setup code here, to run once:
@@ -58,6 +60,18 @@ void loop() {
    //delayMicroseconds(50); //delay unecessary??
    //Write to motor 2 (Yaw)
    Serial.write((int) RE_PID_Output);
+
+     if (OE_angle == OE_Setpoint)
+      OE_Count = OE_Count + 1; 
+      
+    if (OE_Count == 1000)  //can vary this value, probably need to play with delays to get a good number
+       RE_Setpoint = 180;  //Perform 180
+       
+    if (RE_angle == RE_Setpoint)
+      RE_Count = RE_Count + 1;
+     
+    if (RE_Count == 1000)  //Vary this based on timings
+      RE_Setpoint = 0; //Lower arm to base position
    /*
    Serial.print('\n');
    Serial.print(OE_PID_Output);
@@ -76,19 +90,10 @@ void loop() {
     * @@@@@@@@@@@@@@@@@@@@@@@@@@@
     * 
     * //wait for arm to reach desired set point steadily
-    * If OE_angle == OE_SP
-    *  OE_Count = OE_Count + 1; 
-    *  
-    * If OE_Count == 1000  //can vary this value, probably need to play with delays to get a good number
-    *   RE_SP = 180;  //Perform 180
-    *   
-    *If RE_angle == RE_SP
-    * RE_Count = RE_Count + 1;
-    * 
-    *if RE_Count == 1000  //Vary this based on timings
-    *  OE_SP = 0; //Lower arm to base position
-    * 
-    * @@@@@@@@@@@@@@@@@@@@@@@@@@@
+    */
+
+     
+   /* @@@@@@@@@@@@@@@@@@@@@@@@@@@
     */
 }
 
